@@ -35,7 +35,7 @@ correct Statement
 
 -A NULL pointer cannot be dereferenced because it does not point to any valid memory location, and dereferencing it may cause a program crash.
 
-**2. Difference between const int *ptr, int *const ptr, const int *const ptr?**
+****2. Difference between const int *ptr, int *const ptr, const int *const ptr?****
 
 | Declaration                             | Meaning                                      | Can change value (`*ptr`)? | Can change pointer (`ptr`)? | Explanation                                                                                  |
 | --------------------------------------- | -------------------------------------------- | -------------------------- | --------------------------- | -------------------------------------------------------------------------------------------- |
