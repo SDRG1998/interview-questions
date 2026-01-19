@@ -450,3 +450,238 @@ A self-referential structure is a struct that contains a pointer to itself (i.e.
     
         return 0;
     }
+
+## __14. What is the difference between sizeof(char) and sizeof(char *)? Why might they differ on different platforms? __
+
+sizeof(char) -> 1 byte
+sizeof(char *) -> 4 byte (32-bit) or 8 byte (64-bit)
+
+## __15. Write a program to calculate the sizeof an array without using sizeof. __
+
+	#include <stdio.h>
+	
+	// Macro to calculate number of elements in a static array
+	#define ARRAY_LENGTH(arr) ((char *)(&arr + 1) - (char *)arr) / ((char *)(&arr[0] + 1) - (char *)(&arr[0]))
+	
+	int main() {
+	    int arr1[] = {1, 2, 3, 4, 5};
+	    char arr2[] = {'a', 'b', 'c'};
+	    double arr3[] = {1.1, 2.2, 3.3, 4.4};
+	
+	    printf("Number of elements in arr1 = %d\n", ARRAY_LENGTH(arr1));
+	    printf("Number of elements in arr2 = %d\n", ARRAY_LENGTH(arr2));
+	    printf("Number of elements in arr3 = %d\n", ARRAY_LENGTH(arr3));
+	
+	    return 0;
+	}
+
+## __16. What is dynamic memory allocation. How free() works __
+
+-Dynamic memory allocation in C/C++ is the process of allocating memory at runtime rather than at compile time.
+
+<img width="333" height="241" alt="image" src="https://github.com/user-attachments/assets/624d5270-d445-4ef6-be4b-d46d6421ab21" />
+
+1️⃣ What free() actually does
+
+When you allocate memory dynamically using malloc(), calloc(), or realloc(), the memory comes from the heap, which is managed by the memory allocator provided by the C runtime (usually part of the OS).
+
+free(ptr) does NOT zero out memory or physically delete it. Instead:
+
+-It marks the memory block pointed to by ptr as available in the heap.
+
+-It updates internal data structures used by the memory allocator to track free blocks.
+
+-The memory can now be reused by future allocations (malloc, calloc, realloc).
+
+2️⃣ How free() works internally (simplified)
+
+Every allocated block has a header (hidden metadata) that stores:
+
+Size of the block
+
+Status (allocated/free)
+
+Pointers to next/previous blocks (in some allocators)
+
+When you call free(ptr):
+
+The allocator reads the header of ptr to find its size.
+
+Marks the block as free.
+
+Optionally merges adjacent free blocks (coalescing) to avoid fragmentation.
+
+Adds the block back to the free list, so future allocations can reuse it.
+
+## __17. What is the difference between #define macros and inline functions? When would you use one over the other? __
+
+Macros are generally used to define constant values that are being used repeatedly in programs. Macros can even accept arguments and such macros are known as function-like macros.
+
+MACRO with function code
+
+	#include <stdio.h>
+	
+	// Macro function to find maximum
+	#define MAX(x, y) ((x) > (y) ? (x) : (y))
+	
+	int main() {
+	    int a = 10, b = 20;
+	
+	    printf("Maximum = %d\n", MAX(a, b));
+	    printf("Maximum = %d\n", MAX(a + 5, b - 5)); // works correctly
+	
+	    return 0;
+	}
+
+-Inline functions are those functions whose definition is small and can be substituted at the place where its function call is made.
+
+-Usually, people say that having an inline function increases performance by saving time of the function call overhead (i.e. passing arguments variables, return address, return value, stack mantle, and its dismantling, etc.)
+
+but whether an inline function serves your purpose in a positive or negatively depends purely on your code design and is largely debatable.
+
+-The compiler does inlining for performing optimizations. If compiler optimization has been disabled, then inline functions would not serve their purpose and their function call would not be replaced by their function definition.
+
+-To have GCC inline your function regardless of optimization level, declare the function with the “always_inline” attribute:
+
+Inline function code
+
+	#include <stdio.h>
+	
+	// Inline function
+	inline int square(int x) {
+	    return x * x;
+	}
+	
+	int main() {
+	    int a = 5;
+	    int b = 3;
+	
+	    printf("Square of %d = %d\n", a, square(a));
+	    printf("Square of %d = %d\n", b, square(b));
+	    printf("Square of %d+1 = %d\n", a, square(a + 1)); // works safely
+	
+	    return 0;
+	}
+
+Inline functions advantages over macros
+
+-Since they are functions, the type of arguments is checked by the compiler whether they are correct or not.
+
+-There is no risk if called multiple times. But there is risk in macros which can be dangerous when the argument is an expression.
+
+-They can include multiple lines of code without trailing backslashes.
+
+-Inline functions have their own scope for variables and they can return a value.
+
+-Debugging code is easy in the case of Inline functions as compared to macros.
+
+-Remember, inlining is only a request to the compiler, not a command. The compiler can ignore the request for inlining. The compiler may not perform inlining in such circumstances as:
+
+	-If a function contains a loop. (for, while, do-while)
+	-If a function contains static variables.
+	-If a function is recursive.
+	-If a function return type is other than void, and the return statement doesn’t exist in the function body.
+	-If a function contains switch or goto statement.
+
+<img width="867" height="586" alt="image" src="https://github.com/user-attachments/assets/1e7ac596-5061-4d2a-a312-d34efe764786" />
+
+## __18. What is the difference between static and dynamic library.__
+
+Static Lib:
+
+-A static library is a collection of object files (.o) packaged into a single file (.a) using ar command.
+
+-File extension: .a (archived file)
+
+-Linking: Linked at compile time. The code from the library is copied into the executable.
+
+	gcc main.c -L. -lmylib -o myprogram
+
+	Here, -L. points to the directory containing libmylib.a.
+
+Advantages:
+
+-No dependency on the library at runtime.
+
+-Faster execution because all code is already part of the executable.	
+
+Disadvantages:
+
+-Executable size increases.
+
+-Updating library requires recompiling all executables using it.
+
+Dynamic Library (Shared Library):
+
+-Definition: A dynamic library is also a collection of object files but is loaded at runtime rather than compile time.
+
+-File extension: .so (shared object)
+
+-Linking: Linked at runtime (though compiler needs it at compile/link time for references).
+
+	gcc main.c -L. -lmylib -o myprogram
+	export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+	./myprogram
+
+	Here, libmylib.so is loaded when myprogram runs.
+
+Advantages:
+
+-Smaller executable size.
+
+-Multiple programs can share the same library in memory.
+
+-Updating the library doesn’t require recompiling executables.	
+
+Disadvantages:
+
+-Slight runtime overhead due to dynamic linking.
+
+-Executable won’t run if the shared library is missing or incompatible (dependency issues).
+
+**Creation** 
+
+Static
+
+Compile to object file
+
+	gcc -c mathlib.c -o mathlib.o
+
+Create static library
+
+	ar rcs libmathlib.a mathlib.o
+
+		ar = archive tool
+	
+		r = replace/add object files
+
+		c = create if it doesn’t exist
+
+		s = create index (important for linker)
+
+Dynamic Lib
+
+Compile to position-independent object file
+
+	gcc -fPIC -c mathlib.c -o mathlib.o
+
+	-fPIC = Position Independent Code (required for shared libraries).
+
+Create shared library
+	
+	gcc -shared -o libmathlib.so mathlib.o
+
+	-shared tells gcc to make a dynamic library.
+
+	Output: libmathlib.so
+
+Use the dynamic library
+
+	gcc main.c -L. -lmathlib -o main
+
+Run the program:
+
+	export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH  # Tell Linux where to find .so
+	./main	
+
+## __19. How select() API works in networking. __
