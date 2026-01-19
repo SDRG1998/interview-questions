@@ -1,4 +1,4 @@
-**1. What is pointer, What happens when you dereference a null pointer?**
+##**1. What is pointer, What happens when you dereference a null pointer?**
 
 -A pointer in C is a variable that stores the memory address of another variable. 
 
@@ -36,7 +36,7 @@ correct Statement
 -A NULL pointer cannot be dereferenced because it does not point to any valid memory location, and dereferencing it may cause a program crash.
 
 
-__2. Difference between const int *ptr, int *const ptr, const int*const ptr?__
+##__2. Difference between const int *ptr, int *const ptr, const int*const ptr?__
 
 | Declaration                             | Meaning                                      | Can change value (`*ptr`)? | Can change pointer (`ptr`)? | Explanation                                                                                  |
 | --------------------------------------- | -------------------------------------------- | -------------------------- | --------------------------- | -------------------------------------------------------------------------------------------- |
