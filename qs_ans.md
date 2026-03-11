@@ -685,3 +685,81 @@ Run the program:
 	./main	
 
 ## __19. How select() API works in networking. __
+
+## __20. Interrupt flow from H/W to Kernel. __
+
+## __21. Mutex, Semaphore, Spinlock difference when and where it will be used. __
+
+## __22. Thread and process difference. __
+
+## __23. Context Switching and when it happens what happen at background (stack changes, register changes). __
+
+## __24. Explain top and bottom half in ISR __
+
+## __25. If U-boot get stuck how will be debugged. __
+
+## __26. If kernel panic how will uu debug.__
+
+## __27. How will you collect core dump and how will u analyze with it.__
+
+## __28. Write a node Insert at nth position, consider scenario where inser is in thread and different thread uses same node where it will deleiting modifying, now Use mutex lock in efficient way. (use lock inside node struct)__
+
+## __29. Why virtual address is required.
+
+## __30. Virt address to Physical address mempory mapping flow (MMU, Page table flow to RAM)__
+
+## __31. explain about Physical address mappings (MMIO, RAM, memory region to support DoS type of systems)__
+
+## __32. Cache (L1, L2, L3) how data instruction is used with this __
+
+## __33. Cache coherency, Cache Invalidate, Cache flush.__
+
+## __34. What is memory barrier why it is used.__
+
+## __35. Explain driver device matching, probing, binding.__
+
+## __36. Exception levels in ARM based system.__
+
+## __37. how system call from user space reached kernel. __
+
+## __38. which is faster stack or heap and why.__
+
+## __39. Write even Thread and odd thread & synchronize it__.
+
+## __40. implement own mempcy.__
+
+## __41. IPC mechanisms (mq, fifo, pipe, shared mem) when and where it will be used.__
+
+## __42. what happens behing when modprobe gets called.__
+
+## __43. Write a LL to reverse.__
+
+## __44. Pair swap nodes of LL.__
+
+## __45. Quick sort in circular LL.__
+
+## __46. Delte node without head.__
+
+## __47. Delete nth from the end.__
+
+## __48. Merge 2 Sorted LL.__
+
+## __49. Find the max sum of adjacent nodes (combination method use to find the max sum)
+
+## __50. set, clear, toggle.__
+
+## __51. set, clear, toggle in range.__
+
+## __52. rotate bit.__
+
+## __53. Swap bits in ranges.__
+
+## __54. Arithmetic Pointers.__
+
+## __55. Double pointer.__
+
+## __56. odd & even remove all odd node and add at the end of the LL.__
+
+## __57. use of valgrind and gdb__
+
+
